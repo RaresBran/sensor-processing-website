@@ -24,13 +24,5 @@ public class SensorController {
     public List<Sensor> getAllSensors() {
         return sensors;
     }
-
-    @GetMapping("/{id}")
-    public Sensor getSensorById(@PathVariable String id) {
-        return sensors.stream()
-                .filter(sensor -> sensor.getId().equals(id))
-                .findFirst()
-                .orElse(null); // Return null if the sensor is not found
-    }
 }
 

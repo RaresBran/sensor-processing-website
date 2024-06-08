@@ -4,22 +4,26 @@
       <h1>Data Visualization</h1>
     </div>
     <div class="col-12 col-md-8 offset-md-2 text-justify mb-4">
-      <p>
-        This dashboard provides real-time monitoring of sensor data around the
-        city of Bucharest. Users can interact with the map to view sensor
-        locations and get detailed information about each sensor. The data
-        displayed includes temperature, humidity, and air quality, which are
-        processed by our backend system.
-      </p>
-      <p>
-        Additionally, users can view real-time graphs and statistics in the
-        embedded Grafana dashboard below. This helps in analyzing trends and
-        patterns in the data collected from various sensors deployed across the
-        city.
-      </p>
-    </div>
-    <div class="col-12 mb-4">
-      <div leaflet style="height: 500px;" [leafletOptions]="options" [leafletLayers]="layers" (leafletMapReady)="onMapReady($event)"></div>
+      <div class="row">
+        <div class="col-md-6">
+          <p>
+            This dashboard provides real-time monitoring of sensor data around the
+            city of Bucharest. Users can interact with the map to view sensor
+            locations and get detailed information about each sensor. The data
+            displayed includes temperature, humidity, and air quality, which are
+            processed by our backend system.
+          </p>
+          <p>
+            Additionally, users can view real-time graphs and statistics in the
+            embedded Grafana dashboard below. This helps in analyzing trends and
+            patterns in the data collected from various sensors deployed across the
+            city.
+          </p>
+        </div>
+        <div class="col-md-6">
+          <app-map [sensors]="sensors"></app-map>
+        </div>
+      </div>
     </div>
     <div class="col-12 col-md-8 offset-md-2 mb-4">
       <label for="timeRange">Select Time Range:</label>
@@ -28,30 +32,8 @@
       </select>
     </div>
     <div class="col-12">
-      <div class="row">
-        <div class="col-md-4" *ngFor="let sensor of sensors" (click)="selectSensor(sensor)">
-          <div class="card mb-4">
-            <div class="card-body" [ngClass]="{'selected-card': selectedSensor?.id === sensor.id}">
-              <h5 class="card-title">{{ sensor.name }}</h5>
-              <h6 class="card-subtitle mb-2 text-muted">{{ sensor.id }}</h6>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row mt-4" *ngIf="selectedSensor">
-        <div class="col-md-6">
-          <iframe title="" [src]="getAdditionalPanelsUrl(selectedSensor.id, 13)" width="100%" height="200"></iframe>
-        </div>
-        <div class="col-md-6">
-          <iframe title="" [src]="getAdditionalPanelsUrl(selectedSensor.id, 10)" width="100%" height="200"></iframe>
-        </div>
-        <div class="col-md-6">
-          <iframe title="" [src]="getAdditionalPanelsUrl(selectedSensor.id, 9)" width="100%" height="200"></iframe>
-        </div>
-        <div class="col-md-6" *ngFor="let field of fields">
-          <iframe title="" [src]="getSafeUrl(selectedSensor.id, field)" width="100%" height="200"></iframe>
-        </div>
-      </div>
+      <app-sensor-list [sensors]="sensors" [selectedSensor]="selectedSensor" (sensorSelected)="selectSensor($event)"></app-sensor-list>
+      <app-sensor-details *ngIf="selectedSensor" [selectedSensor]="selectedSensor" [selectedTimeRange]="selectedTimeRange" [fields]="fields"></app-sensor-details>
     </div>
   </div>
 </div>
