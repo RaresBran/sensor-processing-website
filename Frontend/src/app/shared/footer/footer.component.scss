@@ -1,0 +1,45 @@
+.footer {
+  background-color: #f8f9fa;
+  padding: 20px 0;
+  width: 100%;
+  border-top: 1px solid #e7e7e7;
+  height: 60px; // Set the height of the footer
+
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+
+    p {
+      margin: 0;
+      font-size: 14px;
+      color: #6c757d;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      gap: 15px;
+      margin: 0;
+      padding: 0;
+
+      li {
+        a {
+          text-decoration: none;
+          color: #007bff;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+}

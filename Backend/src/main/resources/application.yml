@@ -1,3 +1,5 @@
 spring:
   application:
     name: sensor-processing
+server:
+  port: 9090
