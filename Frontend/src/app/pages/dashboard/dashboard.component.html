@@ -21,18 +21,21 @@
           </p>
         </div>
         <div class="col-md-6">
-          <app-map [sensors]="sensors"></app-map>
+          <app-map [sensors$]="sensors$"></app-map>
         </div>
       </div>
     </div>
-    <div class="col-12 col-md-8 offset-md-2 mb-4">
+    <div class="col-12 col-md-8 offset-md-2">
       <label for="timeRange">Select Time Range:</label>
       <select id="timeRange" [(ngModel)]="selectedTimeRange" class="form-control" (change)="updateTimeRange($event)">
         <option *ngFor="let range of timeRanges" [value]="range.value">{{ range.label }}</option>
       </select>
     </div>
     <div class="col-12">
-      <app-sensor-list [sensors]="sensors" [selectedSensor]="selectedSensor" (sensorSelected)="selectSensor($event)"></app-sensor-list>
+      <app-threshold-settings [fields]="fields"></app-threshold-settings>
+    </div>
+    <div class="col-12">
+      <app-sensor-list [sensors]="sensors$ | async" [selectedSensor]="selectedSensor" (sensorSelected)="selectSensor($event)"></app-sensor-list>
       <app-sensor-details *ngIf="selectedSensor" [selectedSensor]="selectedSensor" [selectedTimeRange]="selectedTimeRange" [fields]="fields"></app-sensor-details>
     </div>
   </div>

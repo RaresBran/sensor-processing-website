@@ -10,7 +10,7 @@ import { NgForOf, NgClass } from '@angular/common';
   imports: [NgForOf, NgClass],
 })
 export class SensorListComponent {
-  @Input() sensors: Sensor[] = [];
+  @Input() sensors: Sensor[] | null = null;
   @Input() selectedSensor: Sensor | undefined;
   @Output() sensorSelected = new EventEmitter<Sensor>();
 

@@ -1,21 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { SensorService } from '../../services/services/sensor.service';
 import { Sensor } from '../../models/sensor';
-import { NgForOf, NgIf, NgClass } from '@angular/common';
+import {NgForOf, NgIf, NgClass, AsyncPipe} from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import {MapComponent} from "../../shared/map/map.component";
-import {SensorListComponent} from "../../shared/sensor-list/sensor-list.component";
-import {SensorDetailsComponent} from "../../shared/sensor-details/sensor-details.component";
+import { MapComponent } from '../../shared/map/map.component';
+import { SensorListComponent } from '../../shared/sensor-list/sensor-list.component';
+import { SensorDetailsComponent } from '../../shared/sensor-details/sensor-details.component';
+import { Observable } from 'rxjs';
+import {ThresholdSettingsComponent} from "../../shared/threshold-settings/threshold-settings.component";
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   standalone: true,
-  imports: [NgForOf, NgIf, NgClass, FormsModule, MapComponent, SensorListComponent, SensorDetailsComponent],
+  imports: [NgForOf, NgIf, NgClass, FormsModule, MapComponent, SensorListComponent, SensorDetailsComponent, AsyncPipe, ThresholdSettingsComponent],
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-  sensors: Sensor[] = [];
+  sensors$: Observable<Sensor[]>;
   selectedTimeRange = 'now-6h'; // default time range start
   selectedSensor: Sensor | undefined;
 
@@ -39,13 +41,11 @@ export class DashboardComponent implements OnInit {
     { name: 'smoke', title: 'Smoke Levels', panelId: 11 },
   ];
 
-  constructor(private sensorService: SensorService) {}
-
-  ngOnInit() {
-    this.sensorService.getAllSensors().subscribe((sensors) => {
-      this.sensors = sensors;
-    });
+  constructor(private sensorService: SensorService) {
+    this.sensors$ = this.sensorService.getAllSensors();
   }
+
+  ngOnInit() {}
 
   updateTimeRange(event: Event) {
     const target = event.target as HTMLSelectElement;

@@ -3,7 +3,10 @@
   padding: 20px 0;
   width: 100%;
   border-top: 1px solid #e7e7e7;
-  height: 60px; // Set the height of the footer
+
+  .credit {
+    font-size: 8px;
+  }
 
   .container {
     display: flex;

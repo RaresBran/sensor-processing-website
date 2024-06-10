@@ -5,25 +5,8 @@ import { NgForOf, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-sensor-details',
-  template: `
-    <div class="row mt-4" *ngIf="selectedSensor">
-      <div class="col-md-8 offset-md-2">
-        <iframe title="" [src]="getAdditionalPanelsUrl(selectedSensor.id, 14)" width="100%" height="200"></iframe>
-      </div>
-      <div class="col-md-4">
-        <iframe title="" [src]="getAdditionalPanelsUrl(selectedSensor.id, 13)" width="100%" height="200"></iframe>
-      </div>
-      <div class="col-md-4">
-        <iframe title="" [src]="getAdditionalPanelsUrl(selectedSensor.id, 10)" width="100%" height="200"></iframe>
-      </div>
-      <div class="col-md-4">
-        <iframe title="" [src]="getAdditionalPanelsUrl(selectedSensor.id, 9)" width="100%" height="200"></iframe>
-      </div>
-      <div class="col-md-6" *ngFor="let field of fields">
-        <iframe title="" [src]="getSafeUrl(selectedSensor.id, field)" width="100%" height="200"></iframe>
-      </div>
-    </div>
-  `,
+  templateUrl: './sensor-details.component.html',
+  styleUrls: ['./sensor-details.component.scss'],
   standalone: true,
   imports: [NgForOf, NgIf],
 })
