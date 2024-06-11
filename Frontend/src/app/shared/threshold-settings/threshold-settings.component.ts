@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Thresholds } from '../../models/thresholds';
 import { AlertService } from "../../services/services/alert.service";
 import { NgClass, NgForOf } from "@angular/common";
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-threshold-settings',
@@ -20,7 +21,7 @@ export class ThresholdSettingsComponent implements OnInit {
   thresholdForm: FormGroup;
   isCollapsed = true;  // Initial state of the collapse
 
-  constructor(private fb: FormBuilder, private anomalyService: AlertService) {
+  constructor(private fb: FormBuilder, private anomalyService: AlertService, private toastr: ToastrService) {
     this.thresholdForm = this.fb.group({
       humidityUpper: [''],
       humidityLower: [''],
@@ -71,7 +72,9 @@ export class ThresholdSettingsComponent implements OnInit {
         smokeLower: this.thresholdForm.value.smokeLower
       };
       this.anomalyService.updateThresholds(thresholds).subscribe(response => {
-        console.log('Thresholds updated successfully');
+        this.toastr.success('Thresholds updated successfully');
+      }, error => {
+        this.toastr.error('Failed to update thresholds');
       });
     }
   }

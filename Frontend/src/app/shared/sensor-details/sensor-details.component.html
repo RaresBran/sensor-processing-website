@@ -11,7 +11,7 @@
   <div class="col-md-4">
     <iframe title="" [src]="getAdditionalPanelsUrl(selectedSensor.id, 9)" width="100%" height="200"></iframe>
   </div>
-  <div class="col-md-6" *ngFor="let field of fields">
-    <iframe title="" [src]="getSafeUrl(selectedSensor.id, field)" width="100%" height="200"></iframe>
+  <div class="col-md-6" *ngFor="let iframeUrl of iframeUrls; trackBy: trackByField">
+    <iframe title="" [src]="iframeUrl" width="100%" height="200"></iframe>
   </div>
 </div>

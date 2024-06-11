@@ -1,10 +1,10 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { tileLayer, marker, icon, Map, Marker, Icon, IconOptions } from 'leaflet';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { Sensor } from '../../models/sensor';
 import { AlertService } from '../../services/services/alert.service';
 import { AnomalyStatus } from '../../models/anomaly-status';
-import { forkJoin, Observable, of, Subscription } from 'rxjs';
+import { forkJoin, Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-map',

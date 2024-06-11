@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import "bootstrap/dist/css/bootstrap.css";
 @import "@fortawesome/fontawesome-free/css/all.css";
+@import "ngx-toastr/toastr";
 
 html, body, #map {
   height: 100%;
@@ -11,7 +12,3 @@ html, body, #map {
 .container {
   margin-top: 20px;
 }
-
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
