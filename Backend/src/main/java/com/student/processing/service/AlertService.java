@@ -1,26 +1,24 @@
 package com.student.processing.service;
 
-import com.influxdb.client.InfluxDBClient;
-import com.influxdb.client.InfluxDBClientFactory;
-import com.influxdb.client.QueryApi;
-import com.influxdb.query.FluxRecord;
-import com.influxdb.query.FluxTable;
+import com.student.processing.model.entity.EventAlert;
 import com.student.processing.model.entity.Thresholds;
+import com.student.processing.repository.EventAlertRepository;
 import com.student.processing.repository.ThresholdsRepository;
-import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class AlertService {
 
-    private final InfluxDBClient influxDBClient;
     private final ThresholdsRepository thresholdsRepository;
+    private final EventAlertRepository eventAlertRepository;
 
     private static final Thresholds DEFAULT_THRESHOLDS = Thresholds.builder()
             .humidityUpper(100)
@@ -35,18 +33,11 @@ public class AlertService {
             .lpgLower(0)
             .build();
 
-    @Autowired
-    public AlertService(
-            @Value("${app.influxdb.token}") final String token,
-            @Value("${app.influxdb.url}") final String url,
-            ThresholdsRepository thresholdsRepository
-    ) {
-        this.influxDBClient = InfluxDBClientFactory.create(url, token.toCharArray(), "admin");
-        this.thresholdsRepository = thresholdsRepository;
-    }
-
     public Map<String, Object> getAnomalyStatus(String deviceId) {
-        List<FluxTable> tables = getFluxTables(deviceId);
+        Instant now = Instant.now();
+        Instant thirtyDaysAgo = now.minus(30, ChronoUnit.MINUTES);
+
+        List<EventAlert> alerts = eventAlertRepository.findByDeviceAndTimeBetweenOrderByTimeDesc(deviceId, thirtyDaysAgo, now);
 
         Map<String, Object> result = new HashMap<>();
         boolean isAnomaly = false;
@@ -54,44 +45,24 @@ public class AlertService {
         Double value = null;
         Boolean suspicious = false;
 
-        for (FluxTable table : tables) {
-            List<FluxRecord> records = table.getRecords();
-            FluxRecord mostRecentRecord = records.getFirst();
-            String eventType = (String) mostRecentRecord.getValueByKey("eventType");
-            if ("anomaly_start".equals(eventType)) {
+        for (EventAlert alert : alerts) {
+            if ("anomaly_start".equals(alert.getEventType())) {
                 isAnomaly = true;
-                sensorType = (String) mostRecentRecord.getValueByKey("sensorType");
-                value = (Double) mostRecentRecord.getValueByKey("value");
-                suspicious = (Boolean) mostRecentRecord.getValueByKey("suspicious");
-            } else if ("anomaly_end".equals(eventType)) {
-                isAnomaly = false;
+                sensorType = alert.getSensorType();
+                value = alert.getValue();
+                suspicious = alert.getSuspicious();
+                break; // Assuming you only want the latest "anomaly_start" event
             }
         }
 
+        result.put("status", isAnomaly);
         if (isAnomaly) {
-            result.put("status", true);
             result.put("sensorType", sensorType);
             result.put("value", value);
             result.put("suspicious", suspicious);
-        } else {
-            result.put("status", false);
         }
 
         return result;
-    }
-
-    private @NotNull List<FluxTable> getFluxTables(String deviceId) {
-        String query = String.format("""
-                from(bucket: "sensor-data")
-                  |> range(start: -30d)
-                  |> filter(fn: (r) => r["_measurement"] == "event_alerts")
-                  |> filter(fn: (r) => r["device"] == "%s")
-                  |> pivot(rowKey:["_time"], columnKey: ["_field"], valueColumn: "_value")
-                  |> sort(columns: ["_time"], desc: true)
-                """, deviceId);
-
-        QueryApi queryApi = influxDBClient.getQueryApi();
-        return queryApi.query(query);
     }
 
     public Thresholds updateThresholds(Thresholds thresholds) {

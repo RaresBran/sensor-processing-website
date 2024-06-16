@@ -34,7 +34,7 @@ export class DashboardComponent implements OnInit {
   ];
 
   fields = [
-    { name: 'humidity', title: 'Humidity', panelId: 2 },
+    { name: 'humidity', title: 'Humidity', panelId: 17 },
     { name: 'temperature', title: 'Temperature', panelId: 12 },
     { name: 'co', title: 'CO Levels', panelId: 11 },
     { name: 'lpg', title: 'LPG Levels', panelId: 11 },
