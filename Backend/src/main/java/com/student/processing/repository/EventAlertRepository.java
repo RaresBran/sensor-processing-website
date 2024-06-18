@@ -1,6 +1,6 @@
 package com.student.processing.repository;
 
-import com.student.processing.model.entity.EventAlert;
+import com.student.processing.model.entity_timescale.EventAlert;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.Instant;

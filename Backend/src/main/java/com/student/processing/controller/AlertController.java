@@ -1,6 +1,6 @@
 package com.student.processing.controller;
 
-import com.student.processing.model.entity.Thresholds;
+import com.student.processing.model.entity_redis.Thresholds;
 import com.student.processing.service.AlertService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

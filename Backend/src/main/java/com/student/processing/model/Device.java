@@ -7,7 +7,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Sensor {
+public class Device {
     private String id;
     private String name;
     private double latitude;

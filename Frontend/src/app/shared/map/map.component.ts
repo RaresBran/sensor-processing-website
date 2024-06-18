@@ -9,6 +9,7 @@ import { forkJoin, Observable, of } from 'rxjs';
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
+  styleUrl: './map.component.scss',
   standalone: true,
   imports: [LeafletModule],
 })
@@ -50,8 +51,8 @@ export class MapComponent implements OnInit {
           iconSize: [30, 41],
           iconAnchor: [12, 41],
           iconUrl: hasAnomaly
-            ? './../../../assets/red.png'
-            : './../../../assets/green.png',
+            ? './../../../assets/red-marker.png'
+            : './../../../assets/green-marker.png',
         });
 
         return marker([sensor.latitude, sensor.longitude], {

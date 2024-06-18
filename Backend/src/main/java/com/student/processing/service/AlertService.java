@@ -1,7 +1,7 @@
 package com.student.processing.service;
 
-import com.student.processing.model.entity.EventAlert;
-import com.student.processing.model.entity.Thresholds;
+import com.student.processing.model.entity_timescale.EventAlert;
+import com.student.processing.model.entity_redis.Thresholds;
 import com.student.processing.repository.EventAlertRepository;
 import com.student.processing.repository.ThresholdsRepository;
 import lombok.RequiredArgsConstructor;
