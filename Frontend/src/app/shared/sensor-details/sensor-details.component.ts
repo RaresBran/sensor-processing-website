@@ -30,13 +30,13 @@ export class SensorDetailsComponent {
   }
 
   getSafeUrl(sensorId: string, field: any): SafeResourceUrl {
-    const baseUrl = `http://localhost:3000/d-solo/cdmkscis1vlkwb?orgId=1&from=${this.selectedTimeRange}&to=now&var-sensorId=${sensorId}&refresh=5s&theme=light`;
+    const baseUrl = `http://localhost:3000/d-solo/cdmkscis1vlkwb?orgId=1&from=${this.selectedTimeRange}&to=now&var-deviceId=${sensorId}&refresh=auto&theme=light`;
     const url = `${baseUrl}&panelId=${field.panelId}&var-measure=${field.name}&var-title=${field.title}`;
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
   getAdditionalPanelsUrl(sensorId: string, panelId: number): SafeResourceUrl {
-    const url = `http://localhost:3000/d-solo/cdmkscis1vlkwb?orgId=1&from=${this.selectedTimeRange}&to=now&var-sensorId=${sensorId}&refresh=5s&theme=light&panelId=${panelId}`;
+    const url = `http://localhost:3000/d-solo/cdmkscis1vlkwb?orgId=1&from=${this.selectedTimeRange}&to=now&var-deviceId=${sensorId}&refresh=auto&theme=light&panelId=${panelId}`;
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 

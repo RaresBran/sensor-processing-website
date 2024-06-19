@@ -1,24 +1,31 @@
 package com.student.processing.service;
 
+import com.student.processing.model.dto.AlertEmailDto;
+import com.student.processing.model.dto.ThresholdsDto;
 import com.student.processing.model.entity_timescale.EventAlert;
 import com.student.processing.model.entity_redis.Thresholds;
 import com.student.processing.repository.EventAlertRepository;
 import com.student.processing.repository.ThresholdsRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SetOperations;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class AlertService {
 
+    public static final String THRESHOLDS_KEY = "default";
+    private static final String EMAIL_LIST_KEY = "alert:emailList";
     private final ThresholdsRepository thresholdsRepository;
     private final EventAlertRepository eventAlertRepository;
+    private final RedisTemplate<String, String> redisTemplate;
+    private final ModelMapper modelMapper;
 
     private static final Thresholds DEFAULT_THRESHOLDS = Thresholds.builder()
             .humidityUpper(100)
@@ -34,44 +41,64 @@ public class AlertService {
             .build();
 
     public Map<String, Object> getAnomalyStatus(String deviceId) {
-        Instant now = Instant.now();
-        Instant thirtyDaysAgo = now.minus(30, ChronoUnit.MINUTES);
-
-        List<EventAlert> alerts = eventAlertRepository.findByDeviceAndTimeBetweenOrderByTimeDesc(deviceId, thirtyDaysAgo, now);
-
         Map<String, Object> result = new HashMap<>();
-        boolean isAnomaly = false;
-        String sensorType = "";
-        Double value = null;
-        Boolean suspicious = false;
+        Instant now = Instant.now();
+        Instant lastThirtySeconds = now.minus(30, ChronoUnit.SECONDS);
 
-        for (EventAlert alert : alerts) {
-            if ("anomaly_start".equals(alert.getEventType())) {
-                isAnomaly = true;
-                sensorType = alert.getSensorType();
-                value = alert.getValue();
-                suspicious = alert.getSuspicious();
-                break; // Assuming you only want the latest "anomaly_start" event
-            }
+        List<EventAlert> alerts = eventAlertRepository.findByDeviceAndTimeBetweenOrderByTimeDesc(deviceId, lastThirtySeconds, now);
+        if (alerts.isEmpty()) {
+            result.put("status", false);
+            return result;
+        }
+        EventAlert lastAlert = alerts.getLast();
+
+        boolean isAnomaly = false;
+
+        if ("anomaly_start".equals(lastAlert.getEventType())) {
+            isAnomaly = true;
+            result.put("sensorType", lastAlert.getSensorType());
+            result.put("value", lastAlert.getValue());
+            result.put("suspicious", lastAlert.getSuspicious());
         }
 
         result.put("status", isAnomaly);
-        if (isAnomaly) {
-            result.put("sensorType", sensorType);
-            result.put("value", value);
-            result.put("suspicious", suspicious);
-        }
 
         return result;
     }
 
-    public Thresholds updateThresholds(Thresholds thresholds) {
-        thresholds.setId("default"); // Assuming a single set of thresholds, use "default" as the ID
-        return thresholdsRepository.save(thresholds);
-
+    public ThresholdsDto updateThresholds(ThresholdsDto thresholdsDto) {
+        Thresholds thresholds = modelMapper.map(thresholdsDto, Thresholds.class);
+        thresholds.setId(THRESHOLDS_KEY);
+        thresholds = thresholdsRepository.save(thresholds);
+        return modelMapper.map(thresholds, ThresholdsDto.class);
     }
 
-    public Thresholds getThresholds() {
-        return thresholdsRepository.findById("default").orElse(DEFAULT_THRESHOLDS);
+    public ThresholdsDto getThresholds() {
+        return modelMapper.map(
+                thresholdsRepository.findById(THRESHOLDS_KEY).orElse(DEFAULT_THRESHOLDS),
+                ThresholdsDto.class
+        );
+    }
+
+    private SetOperations<String, String> setOps() {
+        return redisTemplate.opsForSet();
+    }
+
+    public void addEmailToAlertList(AlertEmailDto alertEmailDto) {
+        setOps().add(EMAIL_LIST_KEY, alertEmailDto.getEmail());
+    }
+
+    public List<AlertEmailDto> getAlertEmailList() {
+        Set<String> emails = setOps().members(EMAIL_LIST_KEY);
+        if (emails != null){
+            return emails.stream()
+                    .map(AlertEmailDto::new)
+                    .toList();
+        }
+        return new ArrayList<>();
+    }
+
+    public void deleteEmailFromAlertList(AlertEmailDto alertEmailDto) {
+        setOps().remove(EMAIL_LIST_KEY, alertEmailDto.getEmail());
     }
 }

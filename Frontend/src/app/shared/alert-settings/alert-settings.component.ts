@@ -1,22 +1,25 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { Thresholds } from '../../models/thresholds';
 import { AlertService } from "../../services/services/alert.service";
 import { NgClass, NgForOf } from "@angular/common";
 import { ToastrService } from 'ngx-toastr';
+import {EmailManagementComponent} from "../email-management/email-management.component";
 
 @Component({
   selector: 'app-threshold-settings',
-  templateUrl: './threshold-settings.component.html',
+  templateUrl: './alert-settings.component.html',
   standalone: true,
   imports: [
     NgClass,
     ReactiveFormsModule,
-    NgForOf
+    NgForOf,
+    EmailManagementComponent,
+    FormsModule
   ],
-  styleUrls: ['./threshold-settings.component.scss']
+  styleUrls: ['./alert-settings.component.scss']
 })
-export class ThresholdSettingsComponent implements OnInit {
+export class AlertSettingsComponent implements OnInit {
   @Input() fields: { name: string, title: string }[] = [];
   thresholdForm: FormGroup;
   isCollapsed = true;  // Initial state of the collapse

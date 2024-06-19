@@ -1,0 +1,15 @@
+<div class="container mt-4">
+  <div class="input-group mb-3">
+    <input type="text" class="form-control" placeholder="Search Emails" [(ngModel)]="searchTerm">
+  </div>
+  <ul class="list-group mb-3">
+    <li *ngFor="let email of filteredEmails()" class="list-group-item d-flex justify-content-between align-items-center">
+      {{ email }}
+      <button class="btn btn-danger btn-sm" (click)="deleteEmail(email)">Delete</button>
+    </li>
+  </ul>
+  <div class="form-group">
+    <input type="email" class="form-control" placeholder="Add Email" [(ngModel)]="newEmail">
+    <button class="btn btn-primary mt-2" (click)="addEmail()">Add Email</button>
+  </div>
+</div>

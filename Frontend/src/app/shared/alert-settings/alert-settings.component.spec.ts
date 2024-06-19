@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ThresholdSettingsComponent } from './threshold-settings.component';
+import { AlertSettingsComponent } from './alert-settings.component';
 
 describe('ThresholdSettingsComponent', () => {
-  let component: ThresholdSettingsComponent;
-  let fixture: ComponentFixture<ThresholdSettingsComponent>;
+  let component: AlertSettingsComponent;
+  let fixture: ComponentFixture<AlertSettingsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ThresholdSettingsComponent]
+      imports: [AlertSettingsComponent]
     })
     .compileComponents();
-    
-    fixture = TestBed.createComponent(ThresholdSettingsComponent);
+
+    fixture = TestBed.createComponent(AlertSettingsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

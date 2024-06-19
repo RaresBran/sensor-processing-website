@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { SensorService } from '../../services/services/sensor.service';
 import { Sensor } from '../../models/sensor';
 import {NgForOf, NgIf, NgClass, AsyncPipe} from '@angular/common';
@@ -7,16 +7,16 @@ import { MapComponent } from '../../shared/map/map.component';
 import { SensorListComponent } from '../../shared/sensor-list/sensor-list.component';
 import { SensorDetailsComponent } from '../../shared/sensor-details/sensor-details.component';
 import { Observable } from 'rxjs';
-import {ThresholdSettingsComponent} from "../../shared/threshold-settings/threshold-settings.component";
+import {AlertSettingsComponent} from "../../shared/alert-settings/alert-settings.component";
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   standalone: true,
-  imports: [NgForOf, NgIf, NgClass, FormsModule, MapComponent, SensorListComponent, SensorDetailsComponent, AsyncPipe, ThresholdSettingsComponent],
+  imports: [NgForOf, NgIf, NgClass, FormsModule, MapComponent, SensorListComponent, SensorDetailsComponent, AsyncPipe, AlertSettingsComponent],
   styleUrls: ['./dashboard.component.scss'],
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent {
   sensors$: Observable<Sensor[]>;
   selectedTimeRange = 'now-6h'; // default time range start
   selectedSensor: Sensor | undefined;
@@ -44,8 +44,6 @@ export class DashboardComponent implements OnInit {
   constructor(private sensorService: SensorService) {
     this.sensors$ = this.sensorService.getAllSensors();
   }
-
-  ngOnInit() {}
 
   updateTimeRange(event: Event) {
     const target = event.target as HTMLSelectElement;
