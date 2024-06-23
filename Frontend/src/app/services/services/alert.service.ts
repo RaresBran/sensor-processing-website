@@ -10,41 +10,42 @@ import {AlertEmail} from "../../models/alert-email";
   providedIn: 'root',
 })
 export class AlertService extends BaseService {
+  private baseUrl: string = `${this.apiConfiguration.rootUrl}/app/alert`;
 
   constructor(
-    config: ApiConfiguration,
+    private apiConfiguration: ApiConfiguration,
     http: HttpClient
   ) {
-    super(config, http);
+    super(apiConfiguration, http);
   }
 
   getAnomalyStatus(deviceId: string): Observable<any> {
-    const rb = new RequestBuilder(this.rootUrl, `/anomaly-status/${deviceId}`, 'get');
+    const rb = new RequestBuilder(this.baseUrl, `/anomaly-status/${deviceId}`, 'get');
     return this.http.get<any>(rb.build().url);
   }
 
   updateThresholds(thresholds: any): Observable<any> {
-    const rb = new RequestBuilder(this.rootUrl, `/thresholds`, 'post');
+    const rb = new RequestBuilder(this.baseUrl, `/thresholds`, 'post');
     return this.http.post<any>(rb.build().url, thresholds);
   }
 
   getThresholds(): Observable<any> {
-    const rb = new RequestBuilder(this.rootUrl, `/thresholds`, 'get');
+    const rb = new RequestBuilder(this.baseUrl, `/thresholds`, 'get');
     return this.http.get<any>(rb.build().url);
   }
 
   getAlertEmailList(): Observable<AlertEmail[]> {
-    const rb = new RequestBuilder(this.rootUrl, `/emails`, 'get');
+    const rb = new RequestBuilder(this.baseUrl, `/emails`, 'get');
     return this.http.get<AlertEmail[]>(rb.build().url);
   }
 
   addEmailToAlertList(email: AlertEmail): Observable<AlertEmail> {
-    const rb = new RequestBuilder(this.rootUrl, `/emails`, 'post');
+    const rb = new RequestBuilder(this.baseUrl, `/emails`, 'post');
     return this.http.post<AlertEmail>(rb.build().url, email);
   }
 
   deleteEmailFromAlertList(email: AlertEmail): Observable<AlertEmail> {
-    const rb = new RequestBuilder(this.rootUrl, `/emails`, 'delete');
+    const rb = new RequestBuilder(this.baseUrl, `/emails`, 'delete');
     return this.http.request<AlertEmail>('delete', rb.build().url, { body: email });
   }
 }

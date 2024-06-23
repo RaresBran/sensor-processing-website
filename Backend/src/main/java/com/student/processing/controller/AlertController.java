@@ -11,8 +11,9 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:4200")
+@RequiredArgsConstructor
+@RequestMapping("/app/alert")
 public class AlertController {
 
     private final AlertService alertService;
@@ -49,3 +50,4 @@ public class AlertController {
         return alertEmailDto;
     }
 }
+

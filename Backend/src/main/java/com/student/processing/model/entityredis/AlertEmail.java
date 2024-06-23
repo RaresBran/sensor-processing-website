@@ -1,4 +1,4 @@
-package com.student.processing.model.entity_redis;
+package com.student.processing.model.entityredis;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;

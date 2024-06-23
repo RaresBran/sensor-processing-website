@@ -18,7 +18,7 @@ export class SensorService extends BaseService {
   }
 
   getAllSensors(): Observable<Sensor[]> {
-    const rb = new RequestBuilder(this.rootUrl, '/sensors', 'get');
+    const rb = new RequestBuilder(this.rootUrl, '/app/sensors', 'get');
     return this.http.get<Sensor[]>(rb.build().url);
   }
 }

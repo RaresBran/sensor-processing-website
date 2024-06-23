@@ -2,8 +2,8 @@ package com.student.processing.service;
 
 import com.student.processing.model.dto.AlertEmailDto;
 import com.student.processing.model.dto.ThresholdsDto;
-import com.student.processing.model.entity_timescale.EventAlert;
-import com.student.processing.model.entity_redis.Thresholds;
+import com.student.processing.model.entitytimescale.EventAlert;
+import com.student.processing.model.entityredis.Thresholds;
 import com.student.processing.repository.EventAlertRepository;
 import com.student.processing.repository.ThresholdsRepository;
 import lombok.RequiredArgsConstructor;
@@ -43,9 +43,9 @@ public class AlertService {
     public Map<String, Object> getAnomalyStatus(String deviceId) {
         Map<String, Object> result = new HashMap<>();
         Instant now = Instant.now();
-        Instant lastThirtySeconds = now.minus(30, ChronoUnit.SECONDS);
+        Instant lastThirtyDays = now.minus(30, ChronoUnit.DAYS);
 
-        List<EventAlert> alerts = eventAlertRepository.findByDeviceAndTimeBetweenOrderByTimeDesc(deviceId, lastThirtySeconds, now);
+        List<EventAlert> alerts = eventAlertRepository.findByDeviceAndTimeBetweenOrderByTimeDesc(deviceId, lastThirtyDays, now);
         if (alerts.isEmpty()) {
             result.put("status", false);
             return result;

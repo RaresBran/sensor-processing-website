@@ -1,6 +1,6 @@
 package com.student.processing.repository;
 
-import com.student.processing.model.entity_redis.Thresholds;
+import com.student.processing.model.entityredis.Thresholds;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package com.student.processing.model.entity_timescale;
+package com.student.processing.model.entitytimescale;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

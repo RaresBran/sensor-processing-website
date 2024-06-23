@@ -64,6 +64,8 @@ export class MapComponent implements OnInit {
 
   createPopupContent(sensor: Sensor, anomalyStatus: AnomalyStatus): string {
     let anomalyInfo = '';
+    if (anomalyStatus.sensorType === 'temp')
+      anomalyStatus.sensorType = 'Temperature'
     if (anomalyStatus.status) {
       anomalyInfo = `
         <tr><td>Has Anomaly</td><td>${anomalyStatus.status}</td></tr>

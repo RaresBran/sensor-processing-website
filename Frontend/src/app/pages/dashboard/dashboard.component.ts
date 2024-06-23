@@ -8,6 +8,7 @@ import { SensorListComponent } from '../../shared/sensor-list/sensor-list.compon
 import { SensorDetailsComponent } from '../../shared/sensor-details/sensor-details.component';
 import { Observable } from 'rxjs';
 import {AlertSettingsComponent} from "../../shared/alert-settings/alert-settings.component";
+import {AuthenticationService} from "../../services/services/authentication.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -18,6 +19,7 @@ import {AlertSettingsComponent} from "../../shared/alert-settings/alert-settings
 })
 export class DashboardComponent {
   sensors$: Observable<Sensor[]>;
+  isAdmin: boolean = false;
   selectedTimeRange = 'now-6h'; // default time range start
   selectedSensor: Sensor | undefined;
 
@@ -41,8 +43,10 @@ export class DashboardComponent {
     { name: 'smoke', title: 'Smoke Levels', panelId: 11 },
   ];
 
-  constructor(private sensorService: SensorService) {
+  constructor(private sensorService: SensorService, private authenticationService: AuthenticationService) {
     this.sensors$ = this.sensorService.getAllSensors();
+
+    this.isAdmin = authenticationService.isAdmin();
   }
 
   updateTimeRange(event: Event) {

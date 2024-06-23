@@ -1,22 +1,33 @@
-import {Component} from '@angular/core';
-import {NgIf} from "@angular/common";
+import { Component } from '@angular/core';
 import {Router, RouterLink} from "@angular/router";
+import { UserDto } from '../../models/user-dto';
+import { Observable } from 'rxjs';
+import { AsyncPipe, NgIf } from "@angular/common";
+import {AuthenticationService} from "../../services/services/authentication.service";
 
 @Component({
   selector: 'app-navbar',
-  standalone: true,
+  templateUrl: './navbar.component.html',
+  styleUrls: ['./navbar.component.scss'],
   imports: [
     NgIf,
-    RouterLink
+    RouterLink,
+    AsyncPipe
   ],
-  templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.scss'
+  standalone: true
 })
 export class NavbarComponent {
-  isLoggedIn: boolean = false;
-  userName: string | null = null;
+  user$: Observable<UserDto | null>;
 
   constructor(
     private router: Router,
-  ) { }
+    private authService: AuthenticationService
+  ) {
+    this.user$ = this.authService.user$;
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['dashboard']).then();
+  }
 }
