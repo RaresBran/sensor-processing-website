@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap, map, switchMap } from 'rxjs/operators';
 import { ApiConfiguration } from "../api-configuration";
@@ -41,29 +41,13 @@ export class AuthenticationService {
   }
 
   logout(): void {
-    this.tokenService.getToken().pipe(
-      tap(token => {
-        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-        return this.http.post<void>(`${this.baseUrl}/logout`, {}, { headers });
-      }),
-      tap(() => {
-        this.tokenService.clearToken();
-        this.userSubject.next(null);
-      })
-    ).subscribe();
+    this.http.post<void>(`${this.baseUrl}/logout`, {});
+    this.tokenService.clearToken();
+    this.userSubject.next(null);
   }
 
   getCurrentUser(): Observable<UserDto | null> {
-    return this.tokenService.getToken().pipe(
-      switchMap(token => {
-        if (token) {
-          const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-          return this.http.get<UserDto>(this.baseUrl, { headers });
-        } else {
-          return new BehaviorSubject<UserDto | null>(null);
-        }
-      })
-    );
+    return this.http.get<UserDto | null>(this.baseUrl);
   }
 
   private loadCurrentUser() {

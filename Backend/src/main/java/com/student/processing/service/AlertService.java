@@ -50,7 +50,7 @@ public class AlertService {
             result.put("status", false);
             return result;
         }
-        EventAlert lastAlert = alerts.getLast();
+        EventAlert lastAlert = alerts.getFirst();
 
         boolean isAnomaly = false;
 
