@@ -24,7 +24,7 @@ public class SecurityConfiguration {
 
     protected static final String[] WHITELIST = {
             "/app/auth/**",
-            "/app/alert/**",
+            "/app/alert/anomaly-status/**",
             "/app/sensors",
             "/app/sensors/**",
             "/v2/api-docs",

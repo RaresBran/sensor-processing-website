@@ -90,7 +90,7 @@ public class AlertService {
 
     public List<AlertEmailDto> getAlertEmailList() {
         Set<String> emails = setOps().members(EMAIL_LIST_KEY);
-        if (emails != null){
+        if (emails != null && !emails.isEmpty()){
             return emails.stream()
                     .map(AlertEmailDto::new)
                     .toList();

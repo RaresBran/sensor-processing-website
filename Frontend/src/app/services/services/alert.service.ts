@@ -46,6 +46,6 @@ export class AlertService extends BaseService {
 
   deleteEmailFromAlertList(email: AlertEmail): Observable<AlertEmail> {
     const rb = new RequestBuilder(this.baseUrl, `/emails`, 'delete');
-    return this.http.request<AlertEmail>('delete', rb.build().url, { body: email });
+    return this.http.delete<AlertEmail>(rb.build().url, { body: email });
   }
 }

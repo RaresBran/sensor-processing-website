@@ -9,7 +9,6 @@ export class TokenService {
   private readonly TOKEN_KEY = 'authToken';
   private readonly jwtHelperService: JwtHelperService = new JwtHelperService();
   private tokenSubject = new BehaviorSubject<string | null>(localStorage.getItem(this.TOKEN_KEY));
-  token$: Observable<string | null> = this.tokenSubject.asObservable();
 
   constructor() {
     this.loadToken();
@@ -43,7 +42,7 @@ export class TokenService {
   }
 
   getToken(): Observable<string | null> {
-    return this.token$;
+    return this.tokenSubject.asObservable();
   }
 
   clearToken(): void {
