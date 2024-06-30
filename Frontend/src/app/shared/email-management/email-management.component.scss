@@ -1,0 +1,15 @@
+.scrollable-list {
+  max-height: 320px;
+  overflow-y: auto;
+  //margin-bottom: 1rem;
+}
+
+.list-group-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.list-group-item span {
+  flex-grow: 1;
+}

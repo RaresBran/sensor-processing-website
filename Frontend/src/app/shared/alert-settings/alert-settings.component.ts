@@ -7,7 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import {EmailManagementComponent} from "../email-management/email-management.component";
 
 @Component({
-  selector: 'app-threshold-settings',
+  selector: 'app-alert-settings',
   templateUrl: './alert-settings.component.html',
   standalone: true,
   imports: [

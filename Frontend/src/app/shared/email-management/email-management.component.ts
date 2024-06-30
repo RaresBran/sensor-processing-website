@@ -39,7 +39,7 @@ export class EmailManagementComponent implements OnInit {
     });
   }
   filteredEmails(): string[] {
-    return this.emails.filter(email => email.toLowerCase().includes(this.searchTerm.toLowerCase()));
+    return this.emails.filter(email => email.toLowerCase().includes(this.searchTerm.toLowerCase())).sort();
   }
 
   addEmail(): void {

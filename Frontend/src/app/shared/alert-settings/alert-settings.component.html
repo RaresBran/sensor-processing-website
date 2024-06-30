@@ -6,7 +6,7 @@
   <div class="collapse" [ngClass]="{'show': !isCollapsed}">
     <div class="row mt-3">
       <!-- Threshold Form -->
-      <div class="col-md-6">
+      <div class="col-md-6 threshold-form">
         <form [formGroup]="thresholdForm" (ngSubmit)="onSubmit()">
           <div class="row justify-content-center" *ngFor="let field of fields">
             <div class="col-md-6">

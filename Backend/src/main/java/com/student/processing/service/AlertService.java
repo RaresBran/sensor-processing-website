@@ -1,5 +1,6 @@
 package com.student.processing.service;
 
+import com.student.processing.exception.exceptions.EmailAlreadyExistsException;
 import com.student.processing.model.dto.AlertEmailDto;
 import com.student.processing.model.dto.ThresholdsDto;
 import com.student.processing.model.entitytimescale.EventAlert;
@@ -85,6 +86,9 @@ public class AlertService {
     }
 
     public void addEmailToAlertList(AlertEmailDto alertEmailDto) {
+        if (Objects.requireNonNull(setOps().members(EMAIL_LIST_KEY)).contains(alertEmailDto.getEmail())) {
+            throw new EmailAlreadyExistsException();
+        }
         setOps().add(EMAIL_LIST_KEY, alertEmailDto.getEmail());
     }
 

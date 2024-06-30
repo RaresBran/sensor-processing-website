@@ -1,5 +1,6 @@
 package com.student.processing.exception;
 
+import com.student.processing.exception.exceptions.EmailAlreadyExistsException;
 import com.student.processing.exception.exceptions.LogoutException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -51,6 +52,19 @@ public class GlobalExceptionHandler {
                         ExceptionResponse.builder()
                                 .businessErrorCode(INVALID_DATA_FORMAT.getCode())
                                 .businessErrorDescription(errorMessage)
+                                .error(exp.getMessage())
+                                .build()
+                );
+    }
+
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ResponseEntity<ExceptionResponse> handleException(EmailAlreadyExistsException exp) {
+        return ResponseEntity
+                .status(LOGOUT_EXCEPTION.getCode())
+                .body(
+                        ExceptionResponse.builder()
+                                .businessErrorCode(LOGOUT_EXCEPTION.getCode())
+                                .businessErrorDescription(LOGOUT_EXCEPTION.getDescription())
                                 .error(exp.getMessage())
                                 .build()
                 );

@@ -15,7 +15,8 @@ public enum BusinessErrorCodes {
     IMAGE_UPLOAD_EXCEPTION(417, EXPECTATION_FAILED, "Image is invalid"),
     ENTITY_NOT_FOUND(404, NOT_FOUND, "Requested entity does not exist"),
     INVALID_DATA_FORMAT(400, BAD_REQUEST, "Data format is invalid!"),
-    ACCESS_DENIED(403, FORBIDDEN, "You do not have the rights to perform this action")
+    ACCESS_DENIED(403, FORBIDDEN, "You do not have the rights to perform this action"),
+    EMAIL_ALREADY_EXISTS(409, CONFLICT, "Email already exists"),
     ;
 
     private final int code;
