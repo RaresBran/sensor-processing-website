@@ -1,0 +1,63 @@
+body {
+  font-family: 'Arial', sans-serif; /* Use a clean, readable font */
+  background-color: #f8f9fa; /* Light background for the entire page */
+}
+
+h1 {
+  font-family: 'Georgia', serif; /* Use a different font for headings */
+  font-weight: bold;
+  color: #343a40; /* Match the color scheme */
+}
+
+.card {
+  border: none; /* Remove default card border */
+  border-radius: 0.75rem; /* Rounded corners */
+  overflow: hidden; /* Ensure content doesn't overflow */
+  background-color: #ffffff; /* White background for cards */
+}
+
+.card.shadow-sm {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075); /* Subtle shadow for depth */
+}
+
+ul.feature-list {
+  padding-left: 0;
+  list-style: none;
+}
+
+ul.feature-list li {
+  margin-bottom: 1.5rem; /* Increase spacing between list items */
+  font-size: 1.2rem; /* Increase font size for better readability */
+  line-height: 1.8; /* Improve line height for readability */
+  display: flex;
+  align-items: center;
+  color: #333; /* Dark gray color for text */
+}
+
+ul.feature-list li i {
+  color: #343a40; /* Dark color used in navbar-dark */
+  margin-right: 0.75rem; /* Space between icon and text */
+  font-size: 1.5rem; /* Icon size */
+}
+
+label {
+  font-weight: bold;
+  color: #343a40;
+}
+
+select.form-control {
+  border-radius: 0.25rem;
+  border: 1px solid #ced4da;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+}
+
+.app-map {
+  border: 1px solid #ddd;
+  border-radius: 0.25rem;
+  overflow: hidden;
+}
+
+.container.my-4 {
+  max-width: 1200px; /* Constrain the width for better content alignment */
+}

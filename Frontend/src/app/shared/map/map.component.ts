@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { tileLayer, marker, icon, Map, Marker, Icon, IconOptions } from 'leaflet';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { Sensor } from '../../models/sensor';
@@ -13,11 +13,12 @@ import { forkJoin, Observable, of } from 'rxjs';
   standalone: true,
   imports: [LeafletModule],
 })
-export class MapComponent implements OnInit {
+export class MapComponent implements OnInit, OnDestroy {
   @Input() sensors$: Observable<Sensor[]> = of([]);
   options: any;
   layers: Marker[] = [];
   map: Map | undefined;
+  private pollingInterval: any;
 
   constructor(private alertService: AlertService) {}
 
@@ -35,7 +36,17 @@ export class MapComponent implements OnInit {
 
     this.sensors$.subscribe((sensors: Sensor[]) => {
       this.updateMarkers(sensors);
+      // Start polling every 5 seconds
+      this.pollingInterval = setInterval(() => {
+        this.updateMarkers(sensors);
+      }, 2000);
     });
+  }
+
+  ngOnDestroy() {
+    if (this.pollingInterval) {
+      clearInterval(this.pollingInterval);
+    }
   }
 
   updateMarkers(sensors: Sensor[]) {

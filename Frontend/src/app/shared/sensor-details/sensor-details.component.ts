@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, ChangeDetectorRef, OnChanges } from '@angular/core';
 import { Sensor } from '../../models/sensor';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { NgForOf, NgIf } from '@angular/common';
@@ -9,34 +9,40 @@ import { NgForOf, NgIf } from '@angular/common';
   standalone: true,
   imports: [NgForOf, NgIf],
 })
-export class SensorDetailsComponent {
+export class SensorDetailsComponent implements OnChanges {
   @Input() selectedSensor: Sensor | undefined;
   @Input() selectedTimeRange: string = '';
   @Input() fields: any[] = [];
 
   iframeUrls: SafeResourceUrl[] = [];
+  additionalPanelUrls: { [key: number]: SafeResourceUrl } = {};
 
   constructor(private sanitizer: DomSanitizer, private cdr: ChangeDetectorRef) {}
 
   ngOnChanges() {
-    this.updateIframeUrls();
-  }
-
-  updateIframeUrls() {
     if (this.selectedSensor) {
-      this.iframeUrls = this.fields.map(field => this.getSafeUrl(this.selectedSensor!.id, field));
-      this.cdr.detectChanges();
+      this.updateStaticIframeUrls();
+      this.updateDynamicIframeUrls();
     }
   }
 
-  getSafeUrl(sensorId: string, field: any): SafeResourceUrl {
-    const baseUrl = `http://localhost:3000/d-solo/cdmkscis1vlkwb?orgId=1&from=${this.selectedTimeRange}&to=now&var-deviceId=${sensorId}&refresh=auto&theme=light`;
-    const url = `${baseUrl}&panelId=${field.panelId}&var-measure=${field.name}&var-title=${field.title}`;
-    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  updateStaticIframeUrls() {
+    const panelIds = [19, 20, 22, 9];
+    panelIds.forEach(panelId => {
+      this.additionalPanelUrls[panelId] = this.getSafeUrl(this.selectedSensor!.id, panelId);
+    });
   }
 
-  getAdditionalPanelsUrl(sensorId: string, panelId: number): SafeResourceUrl {
-    const url = `http://localhost:3000/d-solo/cdmkscis1vlkwb?orgId=1&from=${this.selectedTimeRange}&to=now&var-deviceId=${sensorId}&refresh=auto&theme=light&panelId=${panelId}`;
+  updateDynamicIframeUrls() {
+    this.iframeUrls = this.fields.map(field => this.getSafeUrl(this.selectedSensor!.id, field.panelId, field));
+    this.cdr.detectChanges();
+  }
+
+  getSafeUrl(sensorId: string, panelId: number, field?: any): SafeResourceUrl {
+    const baseUrl = `http://localhost:3000/d-solo/cdmkscis1vlkwb?orgId=1&from=${this.selectedTimeRange}&to=now&var-deviceId=${sensorId}&refresh=auto&theme=light`;
+    const url = field
+      ? `${baseUrl}&panelId=${panelId}&var-measure=${field.name}&var-title=${field.title}`
+      : `${baseUrl}&panelId=${panelId}`;
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 

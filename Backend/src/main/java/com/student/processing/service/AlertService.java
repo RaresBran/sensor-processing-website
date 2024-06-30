@@ -20,14 +20,8 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class AlertService {
-
     public static final String THRESHOLDS_KEY = "default";
     private static final String EMAIL_LIST_KEY = "alert:emailList";
-    private final ThresholdsRepository thresholdsRepository;
-    private final EventAlertRepository eventAlertRepository;
-    private final RedisTemplate<String, String> redisTemplate;
-    private final ModelMapper modelMapper;
-
     private static final Thresholds DEFAULT_THRESHOLDS = Thresholds.builder()
             .humidityUpper(100)
             .humidityLower(0)
@@ -40,6 +34,11 @@ public class AlertService {
             .lpgUpper(1000)
             .lpgLower(0)
             .build();
+
+    private final ThresholdsRepository thresholdsRepository;
+    private final EventAlertRepository eventAlertRepository;
+    private final RedisTemplate<String, String> redisTemplate;
+    private final ModelMapper modelMapper;
 
     public Map<String, Object> getAnomalyStatus(String deviceId) {
         Map<String, Object> result = new HashMap<>();

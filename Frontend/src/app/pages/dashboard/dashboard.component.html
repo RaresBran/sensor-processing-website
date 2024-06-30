@@ -3,40 +3,54 @@
     <div class="col-12 text-center mb-4">
       <h1>Data Visualization</h1>
     </div>
-    <div class="col-12 col-md-8 offset-md-2 text-justify mb-4">
-      <div class="row">
-        <div class="col-md-6">
-          <p>
-            This dashboard provides real-time monitoring of sensor data around the
-            city of Bucharest. Users can interact with the map to view sensor
-            locations and get detailed information about each sensor. The data
-            displayed includes temperature, humidity, and air quality, which are
-            processed by our backend system.
-          </p>
-          <p>
-            Additionally, users can view real-time graphs and statistics in the
-            embedded Grafana dashboard below. This helps in analyzing trends and
-            patterns in the data collected from various sensors deployed across the
-            city.
-          </p>
+    <div class="col-12 col-md-6 mb-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <ul class="feature-list">
+            <li><i class="fas fa-chart-line"></i> Real-time monitoring of Bucharest sensor data</li>
+            <li><i class="fas fa-map-marker-alt"></i> Interactive map with sensor locations and details</li>
+            <li><i class="fas fa-thermometer-half"></i> Displays temperature, humidity, and air quality data</li>
+            <li><i class="fas fa-chart-pie"></i> Embedded dashboard for real-time graphs and statistics</li>
+            <li><i class="fas fa-search"></i> Analyzes trends and patterns in sensor data across the city</li>
+          </ul>
         </div>
-        <div class="col-md-6">
+      </div>
+    </div>
+    <div class="col-12 col-md-6 mb-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
           <app-map [sensors$]="sensors$"></app-map>
         </div>
       </div>
     </div>
     <div class="col-12" *ngIf="isAdmin">
-      <app-alert-settings [fields]="fields"></app-alert-settings>
+      <div class="card shadow-sm mb-4">
+        <div class="card-body">
+          <app-alert-settings [fields]="fields"></app-alert-settings>
+        </div>
+      </div>
     </div>
-    <div class="col-12 col-md-8 offset-md-2 mb-3">
-      <label for="timeRange">Select Time Range:</label>
-      <select id="timeRange" [(ngModel)]="selectedTimeRange" class="form-control" (change)="updateTimeRange($event)">
-        <option *ngFor="let range of timeRanges" [value]="range.value">{{ range.label }}</option>
-      </select>
+    <div class="col-12 col-md-8 offset-md-2 mb-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <label for="timeRange">Select Time Range:</label>
+          <select id="timeRange" [(ngModel)]="selectedTimeRange" class="form-control" (change)="updateTimeRange($event)">
+            <option *ngFor="let range of timeRanges" [value]="range.value">{{ range.label }}</option>
+          </select>
+        </div>
+      </div>
     </div>
     <div class="col-12">
-      <app-sensor-list [sensors]="sensors$ | async" [selectedSensor]="selectedSensor" (sensorSelected)="selectSensor($event)"></app-sensor-list>
-      <app-sensor-details *ngIf="selectedSensor" [selectedSensor]="selectedSensor" [selectedTimeRange]="selectedTimeRange" [fields]="fields"></app-sensor-details>
+      <div class="card shadow-sm mb-4">
+        <div class="card-body">
+          <app-sensor-list [sensors]="sensors$ | async" [selectedSensor]="selectedSensor" (sensorSelected)="selectSensor($event)"></app-sensor-list>
+        </div>
+      </div>
+      <div class="card shadow-sm" *ngIf="selectedSensor">
+        <div class="card-body">
+          <app-sensor-details [selectedSensor]="selectedSensor" [selectedTimeRange]="selectedTimeRange" [fields]="fields"></app-sensor-details>
+        </div>
+      </div>
     </div>
   </div>
 </div>
