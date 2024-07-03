@@ -20,7 +20,6 @@ export class EmailManagementComponent implements OnInit {
   emails: string[] = [];
   searchTerm: string = '';
   newEmail: string = '';
-  isCollapsed = true;
 
   constructor(private alertService: AlertService, private toastr: ToastrService) {}
 
@@ -51,8 +50,8 @@ export class EmailManagementComponent implements OnInit {
           this.loadEmails();
           this.newEmail = '';
         },
-        error: () => {
-          this.toastr.error('Failed to add email, format may be invalid');
+        error: (error) => {
+          this.toastr.error(error);
         }
       });
     }

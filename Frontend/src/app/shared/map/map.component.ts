@@ -30,8 +30,8 @@ export class MapComponent implements OnInit, OnDestroy {
           attribution: '...',
         }),
       ],
-      zoom: 12,
-      center: [44.423396, 26.103240],
+      zoom: 15,
+      center: [44.442274406003925, 25.934252184085878],
     };
 
     this.sensors$.subscribe((sensors: Sensor[]) => {

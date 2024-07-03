@@ -60,11 +60,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(EmailAlreadyExistsException.class)
     public ResponseEntity<ExceptionResponse> handleException(EmailAlreadyExistsException exp) {
         return ResponseEntity
-                .status(LOGOUT_EXCEPTION.getCode())
+                .status(EMAIL_ALREADY_EXISTS.getCode())
                 .body(
                         ExceptionResponse.builder()
-                                .businessErrorCode(LOGOUT_EXCEPTION.getCode())
-                                .businessErrorDescription(LOGOUT_EXCEPTION.getDescription())
+                                .businessErrorCode(EMAIL_ALREADY_EXISTS.getCode())
+                                .businessErrorDescription(EMAIL_ALREADY_EXISTS.getDescription())
                                 .error(exp.getMessage())
                                 .build()
                 );

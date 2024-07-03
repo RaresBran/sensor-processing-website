@@ -1,21 +1,37 @@
 package com.student.processing.service;
 
 import com.student.processing.model.Device;
+import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class DeviceService {
 
     private final List<Device> devices = new ArrayList<>();
 
-    public DeviceService() {
-        // Add some dummy data
-        devices.add(new Device("b8:27:eb:bf:9d:51", "Device 1", 44.409344, 26.107534, "Tineretului"));
-        devices.add(new Device("00:0f:00:70:91:0a", "Device 2", 44.427413, 26.088964, "Parliament"));
-        devices.add(new Device("1c:bf:ce:15:ec:4d", "Device 3", 44.435531, 26.102524, "Universitate"));
+    @PostConstruct
+    public void init() {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(
+                Objects.requireNonNull(getClass().getResourceAsStream("/devices.csv"))))) {
+            devices.addAll(reader.lines()
+                    .skip(1) // Skip header line
+                    .map(this::mapToDevice)
+                    .toList());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Device mapToDevice(String line) {
+        String[] fields = line.split(",");
+        return new Device(fields[0], fields[1], Double.parseDouble(fields[2]), Double.parseDouble(fields[3]), fields[4]);
     }
 
     public List<Device> getAllDevices() {
