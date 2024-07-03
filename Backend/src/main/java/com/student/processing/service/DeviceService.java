@@ -2,6 +2,8 @@ package com.student.processing.service;
 
 import com.student.processing.model.Device;
 import jakarta.annotation.PostConstruct;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -14,6 +16,7 @@ import java.util.Objects;
 @Service
 public class DeviceService {
 
+    private static final Logger log = LoggerFactory.getLogger(DeviceService.class);
     private final List<Device> devices = new ArrayList<>();
 
     @PostConstruct
@@ -25,7 +28,7 @@ public class DeviceService {
                     .map(this::mapToDevice)
                     .toList());
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Error reading devices", e);
         }
     }
 
