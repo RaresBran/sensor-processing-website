@@ -48,9 +48,3 @@ npm install
 npm start
 ```
 Open `http://localhost:4200` in your browser to access the dashboard.
-
-## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-
-## License
-Distributed under the MIT License. See `LICENSE` for more information.
