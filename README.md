@@ -13,14 +13,13 @@ A full-stack web application designed for processing and visualizing sensor data
 ## Technologies Used
 
 ### Backend
-- Java / Kotlin (Gradle)
-- Spring Boot (assumed)
+- Java (Gradle)
+- Spring Boot
 - REST API
 - Gradle build system
 
-### Frontend *(if applicable)*
-- React or Vue (assumed)
-- Charting libraries for visualization
+### Frontend
+- Angular
 
 ## Project Structure
 
