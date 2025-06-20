@@ -2,17 +2,6 @@
 
 A full-stack web application for ingesting, analysing and visualising sensor data. The backend exposes REST APIs secured with JWT tokens and the frontend offers an interactive dashboard for monitoring and alerting.
 
-## Table of Contents
-- [Features](#features)
-- [Technology Stack](#technology-stack)
-- [Project Structure](#project-structure)
-- [Prerequisites](#prerequisites)
-- [Running the Application](#running-the-application)
-  - [Backend](#backend)
-  - [Frontend](#frontend)
-- [Contributing](#contributing)
-- [License](#license)
-
 ## Features
 - Authentication and authorisation using JSON Web Tokens
 - Device management and list of available sensors
