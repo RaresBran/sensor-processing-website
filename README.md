@@ -27,7 +27,7 @@ A full-stack web application designed for processing and visualizing sensor data
 sensor-processing-website/
 └── sensor-processing-website-main/
     ├── Backend/                     # Backend source code and configuration
-    ├── Frontend/                    # (Optional) Frontend code (if available)
+    ├── Frontend/                    # Frontend code
     ├── .gitignore
-    ├── README.md                    # Project documentation (this file)
+    ├── README.md                    # Project documentation
 ```
